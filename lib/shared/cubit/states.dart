@@ -2,3 +2,33 @@ abstract class NewsStates
 {}
 class NewsInitialsState extends NewsStates{}
 class NewsTolBarSate extends NewsStates{}
+class NewsGetBusinessState extends NewsStates{}
+class NewsLoadingBusinessState extends NewsStates{}
+class NewsErrorBusinessState extends NewsStates{
+  late final String error;
+  NewsErrorBusinessState( this.error);
+}
+class NewsGetSportsState extends NewsStates{}
+class NewsLoadingSportsState extends NewsStates{}
+class NewsErrorSportsState extends NewsStates{
+  late final String error;
+  NewsErrorSportsState( this.error);
+}
+class NewsGetScienceState extends NewsStates{}
+class NewsLoadingScienceState extends NewsStates{}
+class NewsErrorScienceState extends NewsStates{
+  late final String error;
+  NewsErrorScienceState( this.error);
+}
+class NewsGetEnterState extends NewsStates{}
+class NewsLoadingEnterState extends NewsStates{}
+class NewsErrorEnterState extends NewsStates{
+  late final String error;
+  NewsErrorEnterState( this.error);
+}
+class NewsGetGeneralState extends NewsStates{}
+class NewsLoadingGeneralState extends NewsStates{}
+class NewsErrorGeneralState extends NewsStates{
+  late final String error;
+  NewsErrorGeneralState( this.error);
+}

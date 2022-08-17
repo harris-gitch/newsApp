@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+
 
 class DioHelper{
 
@@ -10,5 +10,9 @@ class DioHelper{
    baseUrl: 'https://newsapi.org/',
       receiveDataWhenStatusError: false,
     ));
+  }
+
+   static Future<Response> getData({required String url,required Map<String,dynamic> query })async{
+     return await dio.get(url, queryParameters: query,);
   }
 }

@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc : ^8.0.1
   dio: ^4.0.6
+  conditional_builder_null_safety: ^0.0.6
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
     - assets/netflix.png
     - assets/sports.png
     - assets/business.png
+    - assets/general.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

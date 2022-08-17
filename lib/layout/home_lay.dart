@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newsapp/models/ItemBarModel.dart';
-import 'package:newsapp/modules/business.dart';
-import 'package:newsapp/modules/entertaiments.dart';
-import 'package:newsapp/modules/science.dart';
-import 'package:newsapp/modules/sports.dart';
 import 'package:newsapp/shared/cubit/cubit.dart';
 import 'package:newsapp/shared/cubit/states.dart';
 
@@ -16,17 +11,18 @@ class Home_layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext contxt)=> NewsCubit(),
+      create: (BuildContext contxt)=> NewsCubit()..getGeneral..getSport()..getScience()..getEntertainment()..getBusiness(),
       child: BlocConsumer<NewsCubit,NewsStates>(
         builder: (context, state) {
           var cubit= NewsCubit.get(context);
           return Scaffold(
             appBar: AppBar(
                 elevation: 0,
-                title: Text('Nwes App',style: TextStyle(fontSize: 24 ,fontWeight:FontWeight.bold,color: Colors.black ),),
+                title: Text('News App',style: TextStyle(fontSize: 24 ,fontWeight:FontWeight.bold,color: Colors.black ),),
                 actions: [
                   IconButton(
                     onPressed: () {
+                      NewsCubit.get(context).getGeneral();
                       // navigateTo(context, SearchScreen());
                     },
                     color: Colors.black,
@@ -44,8 +40,7 @@ class Home_layout extends StatelessWidget {
                     },
                     color: Colors.black,
                     icon: Icon(
-                      // Icons.brightness_4_outlined,
-                      Icons.settings,
+                      Icons.brightness_4_outlined,
                       size: 30.0,
                     ),
                   ),]),

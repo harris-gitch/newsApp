@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsapp/layout/home_lay.dart';
+
 import 'package:newsapp/shared/Network/dio_helper.dart';
 
 import 'blocobserver.dart';
@@ -28,9 +29,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
         appBarTheme: AppBarTheme(
+
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
               statusBarBrightness: Brightness.dark
           ),
           backgroundColor:Colors.white,
