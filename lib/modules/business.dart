@@ -18,7 +18,7 @@ class Business extends StatelessWidget {
         return ConditionalBuilder(condition: list.length>0,
           builder: (context)=>ListView.separated(
               physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) => ArticleItem(list[index]), separatorBuilder: (context,index)=>myDivider(), itemCount: list.length),
+              itemBuilder: (context, index) => ArticleItem(list[index],context), separatorBuilder: (context,index)=>myDivider(), itemCount: list.length),
           fallback:(context) =>Center(child: CircularProgressIndicator())); },
 
     );

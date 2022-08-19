@@ -14,7 +14,7 @@ class Sports extends StatelessWidget {
       listener: (BuildContext context, state) {  },
       builder: (BuildContext context, NewsStates state) {
         var list=NewsCubit.get(context).sports;
-        return conditionBuilder(list); },
+        return conditionBuilder(list,context); },
 
     );
   }

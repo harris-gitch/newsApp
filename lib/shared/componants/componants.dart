@@ -2,6 +2,7 @@
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:newsapp/modules/webview_screen.dart';
 
 import 'package:newsapp/shared/cubit/cubit.dart';
 
@@ -34,49 +35,57 @@ Widget myDivider() => Padding(
     color: Colors.grey[300],
   ),
 );
-Widget ArticleItem(article)=>Padding(
-  padding: const EdgeInsets.all(10.0),
-  child: Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      ConditionalBuilder(
-        condition: article['urlToImage'].toString() != null ,
-        fallback: (context)=>Center(child: CircularProgressIndicator(),),
-        builder: (context)=>Container(
-          height: 120,
-          width: 120,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                  image: NetworkImage('${article['urlToImage']}'),
-                  fit: BoxFit.cover
-              )
+Widget ArticleItem(article,context)=>InkWell(
+  onTap:(){
+    navigateTo(context, WebViewScreen( url: article['url'],));
+  },
+  child:   Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ConditionalBuilder(
+          condition: article['urlToImage'].toString() != null ,
+          fallback: (context)=>Center(child: CircularProgressIndicator(),),
+          builder: (context)=>Container(
+            height: 120,
+            width: 120,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                    image: NetworkImage('${article['urlToImage']}'),
+                    fit: BoxFit.cover
+                )
+            ),
+
           ),
 
         ),
-
-      ),
-      SizedBox(width:10),
-      Expanded(
-        child: Container(
-          height: 120,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: Text('${article['title']}' ,style: TextStyle(fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis
-              ),maxLines: 4,)),
-              Text(article['publishedAt'],style: TextStyle(color: Colors.grey)),
-            ],),
-        ),
-      )
-    ],
+        SizedBox(width:10),
+        Expanded(
+          child: Container(
+            height: 120,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: Text('${article['title']}' ,style: Theme.of(context).textTheme.bodyText1,maxLines: 3,)),
+                Text(article['publishedAt'],style: TextStyle(color: Colors.grey)),
+              ],),
+          ),
+        )
+      ],
+    ),
   ),
 );
-Widget conditionBuilder(List list)=>ConditionalBuilder(condition: list.length >0,
+Widget conditionBuilder(List list,context)=>ConditionalBuilder(condition: list.length >0,
     builder: (context)=>ListView.separated(
         physics: BouncingScrollPhysics(),
-        itemBuilder: (context, index) => ArticleItem(list[index]), separatorBuilder: (context,index)=>myDivider(), itemCount: list.length),
+        itemBuilder: (context, index) => ArticleItem(list[index],context), separatorBuilder: (context,index)=>myDivider(), itemCount: list.length),
     fallback:(context) =>Center(child: CircularProgressIndicator()));
+void navigateTo(context, Widget) => Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => Widget,
+  ),
+);

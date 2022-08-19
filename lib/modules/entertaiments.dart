@@ -15,7 +15,7 @@ class Entertaimnets extends StatelessWidget {
       listener: (BuildContext context, state) {  },
       builder: (BuildContext context, NewsStates state) {
         var list=NewsCubit.get(context).entertainment;
-        return conditionBuilder(list); },
+        return conditionBuilder(list,context); },
 
     );
   }

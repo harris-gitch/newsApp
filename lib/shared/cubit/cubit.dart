@@ -1,6 +1,7 @@
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsapp/modules/general.dart';
-import 'package:newsapp/shared/Network/dio_helper.dart';
+import 'package:newsapp/shared/Network/remote/dio_helper.dart';
 import 'package:newsapp/shared/cubit/states.dart';
 
 import '../../models/ItemBarModel.dart';
@@ -125,6 +126,30 @@ class NewsCubit extends Cubit<NewsStates> {
     }).catchError((e){
       print(e.toString());
       emit(NewsErrorGeneralState(e.toString()));
+    });
+  }
+
+
+  List<dynamic> search = [];
+
+  void getSearch(String value) {
+    emit(NewsGetSearchLoadingState());
+
+    DioHelper.getData(
+      url: 'v2/everything',
+      query: {
+        'q': '$value',
+        'apiKey': '0803a9972d064bd8b3b7379123ea164c',
+      },
+    ).then((value) {
+      //debugPrint(value.data['articles'][0]['title']);
+      search = value.data['articles'];
+     // debugPrint(search[0]['title']);
+
+      emit(NewsGetSearchSuccessState());
+    }).catchError((error) {
+     // debugPrint(error.toString());
+      emit(NewsGetSearchErrorState(error.toString()));
     });
   }
 }

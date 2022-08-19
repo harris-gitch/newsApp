@@ -1,46 +1,117 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:newsapp/layout/cubit/cubit.dart';
+import 'package:newsapp/layout/cubit/state.dart';
 import 'package:newsapp/layout/home_lay.dart';
+import 'package:newsapp/shared/Network/local/cache_helper.dart';
 
-import 'package:newsapp/shared/Network/dio_helper.dart';
+import 'package:newsapp/shared/Network/remote/dio_helper.dart';
+import 'package:newsapp/shared/cubit/cubit.dart';
 
 import 'blocobserver.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  DioHelper.init();
+  await CacheHelper.init();
+  bool? isDark= CacheHelper.getBoolean(key: 'isDark');
   BlocOverrides.runZoned(
         () {
-      runApp( MyApp());
+      runApp( MyApp(isDark!));
       // Use cubits...
     },
     blocObserver: MyBlocObserver(),
   );
-  DioHelper.init();
+
+
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
+ final bool? isDark;
+ MyApp(this.isDark);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
-        appBarTheme: AppBarTheme(
+    return MultiBlocProvider(
 
-          systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarBrightness: Brightness.dark
+      providers: [
+        BlocProvider( create: (BuildContext contxt)=> NewsCubit()..getGeneral..getSport()..getScience()..getEntertainment()..getBusiness(), ),
+        BlocProvider(create: (BuildContext context)=>ModeCubit()..changeAppMode( fromShared: isDark,),)
+      ],
+      child: BlocConsumer<ModeCubit,ModeStates>(builder: (context,state){
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch:Colors.green,
+            scaffoldBackgroundColor: Colors.white,
+            appBarTheme: AppBarTheme(
+              titleSpacing: 20.0,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: Colors.white,
+                statusBarIconBrightness: Brightness.dark,
+              ),
+              backgroundColor: Colors.white,
+              elevation: 0.0,
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+              iconTheme: IconThemeData(
+                color: Colors.black,
+              ),
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: Colors.green,
+            ),
+            textTheme: TextTheme(
+              bodyText1: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
           ),
-          backgroundColor:Colors.white,
-          elevation: 0,
+          darkTheme: ThemeData(
+            primarySwatch: Colors.green,
+            scaffoldBackgroundColor: HexColor('#262626'),
+            appBarTheme: AppBarTheme(
+              titleSpacing: 20.0,
 
-        ),
-      ),
-      home: Home_layout(),
+              systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: HexColor('#262626'),
+                statusBarIconBrightness: Brightness.light,
+              ),
+              backgroundColor: HexColor('#262626'),
+              elevation: 0.0,
+              titleTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+              iconTheme: IconThemeData(
+                color: Colors.white,
+              ),
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: Colors.green,
+            ),
+            textTheme: TextTheme(
+              bodyText1: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          themeMode:ModeCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+          home: Home_layout(),
+        );
+      }, listener: (context,state){}),
     );
   }
 
