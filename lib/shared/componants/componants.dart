@@ -78,11 +78,11 @@ Widget ArticleItem(article,context)=>InkWell(
     ),
   ),
 );
-Widget conditionBuilder(List list,context)=>ConditionalBuilder(condition: list.length >0,
+Widget conditionBuilder(List list,context,{bool isSearch=false})=>ConditionalBuilder(condition: list.length >0,
     builder: (context)=>ListView.separated(
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) => ArticleItem(list[index],context), separatorBuilder: (context,index)=>myDivider(), itemCount: list.length),
-    fallback:(context) =>Center(child: CircularProgressIndicator()));
+    fallback:(context) =>isSearch ? Container() : Center(child: CircularProgressIndicator()));
 void navigateTo(context, Widget) => Navigator.push(
   context,
   MaterialPageRoute(
