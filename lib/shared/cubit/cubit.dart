@@ -1,7 +1,10 @@
 
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newsapp/models/headlines_model.dart';
 import 'package:newsapp/modules/general.dart';
 import 'package:newsapp/shared/Network/remote/dio_helper.dart';
+import 'package:newsapp/shared/componants/constants.dart';
 import 'package:newsapp/shared/cubit/states.dart';
 
 import '../../models/ItemBarModel.dart';
@@ -13,17 +16,26 @@ import '../../modules/sports.dart';
 class NewsCubit extends Cubit<NewsStates> {
   NewsCubit() : super(NewsInitialsState());
  static NewsCubit get(context)=>BlocProvider.of(context);
+ final countryPicker=const FlCountryCodePicker();
+ CountryCode? countryCode;
+ HeadlinesModel? headlinesModel;
  int CurrentInd=0;
   List screen=[
-    General(),
+   // General(),
     Sports(),
     Science(),
     Entertaimnets(),
     Business()
   ];
 
+  void changeflag(CountryCode flag){
+   print(flag);
+    countryCode=flag;
+    emit(GetFlagState());
+  }
+
   List<itemBar> list=[
-    itemBar(name: 'General', img: 'assets/general.png'),
+   // itemBar(name: 'General', img: 'assets/general.png'),
     itemBar(name: 'sports', img: 'assets/sports.png'),
     itemBar(name: 'science', img: 'assets/science.png'),
     itemBar(name: 'entertaiments', img: 'assets/netflix.png'),
@@ -45,15 +57,35 @@ class NewsCubit extends Cubit<NewsStates> {
         }
     ).then((value)  {
       business=value.data['articles'];
-      print(business[0]['title']);
+    //  print(business[0]['title']);
       emit(NewsGetBusinessState());
     }).catchError((e){
       print(e.toString());
       emit(NewsErrorBusinessState(e.toString()));
     });
   }
+
+//this method to get list of articles and display to topHeadLines list
+  List<dynamic> topHeadLines=[];
+  void getTopHeadLines(String code){
+    emit(NewsLoadingHeadlinesState());
+    DioHelper.getData(
+        url: 'v2/top-headlines',
+        query:{
+          'country':code,
+          'apiKey':'573c5df6ca3c4b309a1e88c66f0b4a81'
+        }
+    ).then((value)  {
+      topHeadLines=value.data['articles'];
+      emit(NewsGetHeadlinesState());
+    }).catchError((e){
+      print(e.toString());
+      emit(NewsErrorHeadlinesState(e.toString()));
+    });
+  }
+
   List<dynamic> sports=[];
-  void getSport(){
+  void getSport(String code){
     emit(NewsLoadingSportsState());
     DioHelper.getData(
         url: 'v2/top-headlines',
@@ -71,6 +103,7 @@ class NewsCubit extends Cubit<NewsStates> {
       emit(NewsErrorSportsState(e.toString()));
     });
   }
+
   List<dynamic> science=[];
   void getScience(){
     emit(NewsLoadingScienceState());
@@ -90,6 +123,7 @@ class NewsCubit extends Cubit<NewsStates> {
       emit(NewsErrorScienceState(e.toString()));
     });
   }
+
   List<dynamic> entertainment=[];
   void getEntertainment(){
     emit(NewsLoadingEnterState());
@@ -121,7 +155,7 @@ class NewsCubit extends Cubit<NewsStates> {
         }
     ).then((value)  {
       general=value.data['articles'];
-      print(general[0]['title']);
+   //   print(general[0]['title']);
       emit(NewsGetGeneralState());
     }).catchError((e){
       print(e.toString());

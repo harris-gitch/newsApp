@@ -8,6 +8,7 @@ import 'package:newsapp/layout/home_lay.dart';
 import 'package:newsapp/shared/Network/local/cache_helper.dart';
 
 import 'package:newsapp/shared/Network/remote/dio_helper.dart';
+import 'package:newsapp/shared/componants/constants.dart';
 import 'package:newsapp/shared/cubit/cubit.dart';
 
 import 'blocobserver.dart';
@@ -16,32 +17,35 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
   await CacheHelper.init();
-  bool? isDark= CacheHelper.getBoolean(key: 'isDark');
-  BlocOverrides.runZoned(
-        () {
-      runApp( MyApp(isDark!));
-      // Use cubits...
-    },
-    blocObserver: MyBlocObserver(),
-  );
 
+  bool? isDark = CacheHelper.getBoolean(key: 'isDark');
+  codeFl= CacheHelper.getData(key: 'codeFl');
+  print(codeFl);
+  runApp(MyApp(isDark: isDark,codeFl: codeFl,));
+  Bloc.observer= MyBlocObserver();
 
 }
 
 class MyApp extends StatelessWidget {
 
- final bool? isDark;
- MyApp(this.isDark);
+  final bool? isDark;
+  final String? codeFl;
+
+  MyApp({
+    this.isDark,
+    this.codeFl
+  });
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
 
       providers: [
-        BlocProvider( create: (BuildContext contxt)=> NewsCubit()..getGeneral..getSport()..getScience()..getEntertainment()..getBusiness(), ),
+        BlocProvider( create: (BuildContext contxt)=> NewsCubit()..getGeneral..getSport(codeFl!)..getScience()..getEntertainment()..getBusiness()..getTopHeadLines(codeFl!), ),
         BlocProvider(create: (BuildContext context)=>ModeCubit()..changeAppMode( fromShared: isDark,),)
       ],
-      child: BlocConsumer<ModeCubit,ModeStates>(builder: (context,state){
+      child: BlocConsumer<ModeCubit,ModeStates>(
+          builder: (context,state){
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',

@@ -42,3 +42,11 @@ class NewsGetSearchErrorState extends NewsStates
   NewsGetSearchErrorState(this.error);
 
 }
+
+class NewsGetHeadlinesState extends NewsStates{}
+class NewsLoadingHeadlinesState extends NewsStates{}
+class NewsErrorHeadlinesState extends NewsStates{
+  late final String error;
+  NewsErrorHeadlinesState( this.error);
+}
+class GetFlagState extends NewsStates{}
