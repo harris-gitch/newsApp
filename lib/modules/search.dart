@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsapp/shared/componants/componants.dart';
 
+import '../shared/componants/constants.dart';
 import '../shared/cubit/cubit.dart';
 import '../shared/cubit/states.dart';
 
@@ -25,7 +26,7 @@ class SearchScreen extends StatelessWidget {
                     controller: searchController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {
-                      NewsCubit.get(context).getSearch(value);
+                      NewsCubit.get(context).getSearch(value,codeFl!);
                     },
                     validator: (value) {
                       if (value!.isEmpty) {

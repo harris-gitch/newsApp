@@ -46,12 +46,12 @@ class NewsCubit extends Cubit<NewsStates> {
     emit(NewsTolBarSate());
   }
   List<dynamic> business=[];
-  void getBusiness(){
+  void getBusiness(String code){
     emit(NewsLoadingBusinessState());
     DioHelper.getData(
         url: 'v2/top-headlines',
         query:{
-          'country':'us',
+          'country':code,
           'category':'business',
           'apiKey':'573c5df6ca3c4b309a1e88c66f0b4a81'
         }
@@ -90,7 +90,7 @@ class NewsCubit extends Cubit<NewsStates> {
     DioHelper.getData(
         url: 'v2/top-headlines',
         query:{
-          'country':'us',
+          'country':code,
           'category':'sports',
           'apiKey':'573c5df6ca3c4b309a1e88c66f0b4a81'
         }
@@ -105,12 +105,12 @@ class NewsCubit extends Cubit<NewsStates> {
   }
 
   List<dynamic> science=[];
-  void getScience(){
+  void getScience(String code){
     emit(NewsLoadingScienceState());
     DioHelper.getData(
         url: 'v2/top-headlines',
         query:{
-          'country':'us',
+          'country':code,
           'category':'science',
           'apiKey':'573c5df6ca3c4b309a1e88c66f0b4a81'
         }
@@ -125,12 +125,12 @@ class NewsCubit extends Cubit<NewsStates> {
   }
 
   List<dynamic> entertainment=[];
-  void getEntertainment(){
+  void getEntertainment(String code){
     emit(NewsLoadingEnterState());
     DioHelper.getData(
         url: 'v2/top-headlines',
         query:{
-          'country':'us',
+          'country':code,
           'category':'Entertainment',
           'apiKey':'573c5df6ca3c4b309a1e88c66f0b4a81'
         }
@@ -166,7 +166,7 @@ class NewsCubit extends Cubit<NewsStates> {
 
   List<dynamic> search = [];
 
-  void getSearch(String value) {
+  void getSearch(String value,String code) {
     emit(NewsGetSearchLoadingState());
 
     DioHelper.getData(

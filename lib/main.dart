@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
 
       providers: [
-        BlocProvider( create: (BuildContext contxt)=> NewsCubit()..getGeneral..getSport(codeFl!)..getScience()..getEntertainment()..getBusiness()..getTopHeadLines(codeFl!), ),
+        BlocProvider( create: (BuildContext contxt)=> NewsCubit()..getGeneral..getSport(codeFl!)..getScience(codeFl!)..getEntertainment(codeFl!)..getBusiness(codeFl!)..getTopHeadLines(codeFl!), ),
         BlocProvider(create: (BuildContext context)=>ModeCubit()..changeAppMode( fromShared: isDark,),)
       ],
       child: BlocConsumer<ModeCubit,ModeStates>(
