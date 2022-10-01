@@ -8,7 +8,11 @@ class NewsErrorBusinessState extends NewsStates{
   late final String error;
   NewsErrorBusinessState( this.error);
 }
-class NewsGetSportsState extends NewsStates{}
+class NewsGetSportsState extends NewsStates{
+  List<dynamic> sports;
+
+  NewsGetSportsState(this.sports);
+}
 class NewsLoadingSportsState extends NewsStates{}
 class NewsErrorSportsState extends NewsStates{
   late final String error;

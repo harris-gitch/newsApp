@@ -10,6 +10,7 @@ import 'package:newsapp/shared/Network/local/cache_helper.dart';
 import 'package:newsapp/shared/Network/remote/dio_helper.dart';
 import 'package:newsapp/shared/componants/constants.dart';
 import 'package:newsapp/shared/cubit/cubit.dart';
+import 'package:newsapp/shared/cubit/states.dart';
 
 import 'blocobserver.dart';
 
@@ -17,20 +18,15 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
   await CacheHelper.init();
-
   bool? isDark = CacheHelper.getBoolean(key: 'isDark');
   codeFl= CacheHelper.getData(key: 'codeFl');
   print(codeFl);
   runApp(MyApp(isDark: isDark,codeFl: codeFl,));
   Bloc.observer= MyBlocObserver();
-
 }
-
 class MyApp extends StatelessWidget {
-
   final bool? isDark;
   final String? codeFl;
-
   MyApp({
     this.isDark,
     this.codeFl
@@ -39,7 +35,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-
       providers: [
         BlocProvider( create: (BuildContext contxt)=> NewsCubit()..getGeneral..getSport(codeFl!)..getScience(codeFl!)..getEntertainment(codeFl!)..getBusiness(codeFl!)..getTopHeadLines(codeFl!), ),
         BlocProvider(create: (BuildContext context)=>ModeCubit()..changeAppMode( fromShared: isDark,),)

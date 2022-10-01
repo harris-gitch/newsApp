@@ -2,6 +2,7 @@
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:newsapp/modules/webview_screen.dart';
 
 import 'package:newsapp/shared/cubit/cubit.dart';
@@ -89,3 +90,32 @@ void navigateTo(context, Widget) => Navigator.push(
     builder: (context) => Widget,
   ),
 );
+
+void showToast({
+  required String text,
+  required ToastStates state,
+}) =>
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 5,
+      backgroundColor: chooseToastColor(state),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+enum ToastStates {SUCCESS, ERROR, WARNING}
+
+Color chooseToastColor(ToastStates state)
+{
+  Color color;
+  const Map={
+    ToastStates.SUCCESS:Colors.green,
+    ToastStates.ERROR:Colors.red,
+    ToastStates.WARNING:Colors.amber,
+  };
+  color= Map[state] ?? Colors.green;
+
+  return color;
+}

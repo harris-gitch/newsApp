@@ -6,6 +6,7 @@ import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:newsapp/shared/componants/constants.dart';
 import 'package:newsapp/shared/cubit/cubit.dart';
 import 'package:newsapp/shared/cubit/states.dart';
@@ -48,6 +49,11 @@ class Home_layout extends StatelessWidget {
                       NewsCubit.get(context).changeflag(code!);
                      // print(code.code);
                       CacheHelper.saveData(key: 'codeFl', value: code.code).then((value) => print(value));
+                      NewsCubit.get(context).getSport(code.code);
+                      NewsCubit.get(context).getBusiness(code.code);
+                      NewsCubit.get(context).getEntertainment(code.code);
+                      NewsCubit.get(context).getTopHeadLines(code.code);
+                      NewsCubit.get(context).getScience(code.code);
                     },
                     child: Container(
                       height: 30,
@@ -72,10 +78,10 @@ class Home_layout extends StatelessWidget {
               ),
              SizedBox(height: 10,),
               ConditionalBuilder(
-                  condition:list.length >0,
+                  condition:NewsCubit.get(context).topHeadLines.length >0,
                   builder: (context)=>CarouselSlider(items: List.generate(5,(index) => InkWell(
                 onTap:(){
-                  navigateTo(context, WebViewScreen( url: list[index]['url'],));
+                  navigateTo(context, WebViewScreen( url: NewsCubit.get(context).topHeadLines[index]['url'],));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
@@ -179,6 +185,17 @@ class Home_layout extends StatelessWidget {
         );
       },
       listener: ( context,state){
+        if(state is NewsGetSportsState){
+          if(state.sports.length>0){
+            showToast(text: 'successful process!',
+                state: ToastStates.SUCCESS);
+          }else{
+            showToast(text:"Not Founded! change the country",
+                state: ToastStates.ERROR
+
+            );
+          }
+        }
       },
     );
   }
